@@ -1,5 +1,5 @@
 // Make connection
-var socket = io.connect(process.env.PORT);
+var socket = io.connect('https://socketa.herokuapp.com/');
 
 // Query DOM
 var message = document.getElementById('message'),
