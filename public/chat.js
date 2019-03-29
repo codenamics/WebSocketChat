@@ -22,6 +22,7 @@ message.addEventListener('keydown', function () {
 })
 
 socket.on('chat', function (data) {
+    message.value = "";
     output.innerHTML += '<p><strong>' + data.handle + ': </strong>' + data.message + '</p>';
 });
 
