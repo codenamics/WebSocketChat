@@ -20,9 +20,8 @@ btn.addEventListener('click', function () {
 
 message.addEventListener('keypress', function () {
     socket.emit('typing', handle.value);
-    if (message.value = '') {
-        feedback.innerHTML = '';
-    }
+
+
 })
 
 socket.on('chat', function (data) {
