@@ -15,6 +15,9 @@ btn.addEventListener('click', function () {
         handle: handle.value
     });
     message.value = "";
+    if (message.value = '') {
+        feedback.innerHTML = '';
+    }
 });
 
 message.addEventListener('keydown', function () {
@@ -22,11 +25,11 @@ message.addEventListener('keydown', function () {
 })
 
 socket.on('chat', function (data) {
-    message.value = "";
+    feedback.innerHTML = '';
     output.innerHTML += '<p><strong>' + data.handle + ': </strong>' + data.message + '</p>';
 });
 
 socket.on('typing', function (data) {
-    console.log(data)
+
     feedback.innerHTML = '<p><em>' + data + ' is typing a message...</em></p>';
 });
