@@ -15,13 +15,14 @@ btn.addEventListener('click', function () {
         handle: handle.value
     });
     message.value = "";
-    if (message.value = '') {
-        feedback.innerHTML = '';
-    }
+
 });
 
 message.addEventListener('keydown', function () {
     socket.emit('typing', handle.value);
+    if (message.value = '') {
+        feedback.innerHTML = '';
+    }
 })
 
 socket.on('chat', function (data) {
