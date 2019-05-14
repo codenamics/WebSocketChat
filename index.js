@@ -1,27 +1,32 @@
-let express = require('express')
-let socket = require('socket.io')
+const express = require('express')
+const webpush = require('web-push')
+const bodyParser = require('body-parser')
+const path = require('path')
 
-let app = express()
+const app = express()
 
-let server = app.listen(process.env.PORT, () => {
-    console.log('Server started')
+app.use(express.static(path.join(__dirname, 'client')))
+
+app.use(bodyParser.json())
+const public =
+    'BHFBJ-vcaywicbrsvzLr4Cuy_W6_vdaRVkVBZc5s_91Xh2plmyFZbduWksRPXC_e3qCaeUiftMF_COL60gHvLiU'
+
+const private = 'w3Cw2BHUaUMt245uZ2zL3AU6gYoZ0Cpg2-LLzrRmBFs'
+
+webpush.setVapidDetails('mailto:test@tes.pl', public, private)
+
+app.post('/subscribe', (req, res) => {
+    const subscription = req.body
+    res.status(201).json({})
+    const payload = JSON.stringify({
+        title: 'push'
+    })
+
+    webpush.sendNotification(subscription, payload).catch(err => {
+        console.log(err)
+    })
 })
 
-app.use(express.static('public'))
-
-let io = socket(server)
-
-io.on('connection', (socket) => {
-    console.log('Mafe socekt connection')
-
-    socket.on('chat', (data) => {
-        // console.log(data);
-        io.sockets.emit('chat', data);
-    });
-
-    socket.on('typing', function (data) {
-        console.log(data)
-        socket.broadcast.emit('typing', data);
-    });
-
+app.listen(5000, () => {
+    console.log('Server')
 })
