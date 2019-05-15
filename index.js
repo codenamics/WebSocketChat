@@ -15,21 +15,21 @@ const private = 'w3Cw2BHUaUMt245uZ2zL3AU6gYoZ0Cpg2-LLzrRmBFs'
 
 webpush.setVapidDetails('mailto:test@tes.pl', public, private)
 
-setInterval(() => {
-    app.post('/subscribe', (req, res) => {
-        const subscription = req.body
-        res.status(201).json({})
-        const payload = JSON.stringify({
-            title: 'push'
-        })
 
-        webpush.sendNotification(subscription, payload).catch(err => {
-            console.log(err)
-        })
+app.post('/subscribe', (req, res) => {
+    const subscription = req.body
+    res.status(201).json({})
+    const payload = JSON.stringify({
+        title: 'push'
     })
-}, 7000);
+
+    webpush.sendNotification(subscription, payload).catch(err => {
+        console.log(err)
+    })
+})
 
 
-app.listen(process.env.PORT, () => {
+
+app.listen(5000, () => {
     console.log('Server')
 })
