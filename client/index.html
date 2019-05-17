@@ -11,7 +11,33 @@
 <body>
 
     <button id='btn'>click</button>
+    <button id='btn-send'>send</button>
+    <button id='btn-unsub'>unsub</button>
     <script>
+        document.querySelector('#btn-unsub').addEventListener('click', () => {
+            navigator.serviceWorker.ready.then(function (reg) {
+                reg.pushManager.getSubscription().then(function (subscription) {
+                    subscription.unsubscribe().then(function (successful) {
+                        console.log(successful)
+                    }).catch(
+                        err => console.log(err)
+                    )
+                })
+            });
+        })
+
+
+
+        document.querySelector('#btn-send').addEventListener('click', () => {
+            fetch("/subscribe", {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then(res => {
+                console.log(res)
+            }).catch(err => console.log(err))
+        })
         const public = 'BHFBJ-vcaywicbrsvzLr4Cuy_W6_vdaRVkVBZc5s_91Xh2plmyFZbduWksRPXC_e3qCaeUiftMF_COL60gHvLiU';
 
 
@@ -32,7 +58,7 @@
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(public)
                 })
-                await fetch("/subscribe", {
+                await fetch("/save", {
                     method: "POST",
                     body: JSON.stringify(subscription),
                     headers: {
