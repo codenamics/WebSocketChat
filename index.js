@@ -8,7 +8,9 @@ const app = express()
 const mongoose = require('mongoose')
 
 mongoose
-    .connect(process.env.mongoURI)
+    .connect(process.env.mongoURI, {
+        useNewUrlParser: true
+    })
     .then(() => console.log("MongoDB Connected"))
     .catch(err => console.log(err));
 

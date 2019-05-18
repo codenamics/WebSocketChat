@@ -5,89 +5,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-D/7uAka7uwterkSxa2LwZR7RJqH2X6jfmhkJ0vFPGUtPyBMF2WMq9S+f9Ik5jJu1" crossorigin="anonymous">
     <title>push</title>
+    <style>
+        body {
+            height: 100vh;
+        }
+
+        .container {
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="container text-center d-flex flex-row justify-content-center align-items-center">
+        <div class="card text-black bg-default mb-3 mr-5" style="max-width: 20rem;">
 
-    <button id='btn'>click</button>
-    <button id='btn-send'>send</button>
-    <button id='btn-unsub'>unsub</button>
-    <script>
-        document.querySelector('#btn-unsub').addEventListener('click', () => {
-            navigator.serviceWorker.ready.then(function (reg) {
-                reg.pushManager.getSubscription().then(function (subscription) {
-                    subscription.unsubscribe().then(function (successful) {
-                        console.log(successful)
-                    }).catch(
-                        err => console.log(err)
-                    )
-                })
-            });
-        })
+            <div class="card-body">
+                <h4 class="card-title">Register to receive notifications</h4>
+                <button id='btn' type="button" class="btn btn-success btn-lg btn-block">Register</button>
+            </div>
+        </div>
+        <div class="card text-black bg-default mb-3" style="max-width: 20rem;">
 
-
-
-        document.querySelector('#btn-send').addEventListener('click', () => {
-            fetch("/subscribe", {
-                method: "GET",
-                headers: {
-                    "content-type": "application/json"
-                }
-            }).then(res => {
-                console.log(res)
-            }).catch(err => console.log(err))
-        })
-        const public = 'BHFBJ-vcaywicbrsvzLr4Cuy_W6_vdaRVkVBZc5s_91Xh2plmyFZbduWksRPXC_e3qCaeUiftMF_COL60gHvLiU';
+            <div class="card-body">
+                <h4 class="card-title">Unregister from notifications</h4>
+                <button id='btn-unsub' type="button" class="btn btn-danger btn-lg btn-block">Unregister</button>
+            </div>
+        </div>
+    </div>
 
 
-
-        document.querySelector('#btn').addEventListener('click', () => {
-            if ('serviceWorker' in navigator) {
-                send().catch(err => {
-                    console.log(err)
-                })
-            }
-            async function send() {
-                console.log('Registering')
-                const register = await navigator.serviceWorker.register('/worker.js', {
-                    scope: '/'
-                })
-                console.log('Service worker registered')
-                const subscription = await register.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array(public)
-                })
-                await fetch("/save", {
-                    method: "POST",
-                    body: JSON.stringify(subscription),
-                    headers: {
-                        "content-type": "application/json"
-                    }
-                });
-                console.log(JSON.stringify(subscription))
-                console.log("Push Sent...");
-            }
+    <button id='btn-send' type="button" class="btn btn-primary">Send</button>
 
 
-
-
-            function urlBase64ToUint8Array(base64String) {
-                const padding = '='.repeat((4 - base64String.length % 4) % 4);
-                const base64 = (base64String + padding)
-                    .replace(/-/g, '+')
-                    .replace(/_/g, '/');
-
-                const rawData = window.atob(base64);
-                const outputArray = new Uint8Array(rawData.length);
-
-                for (let i = 0; i < rawData.length; ++i) {
-                    outputArray[i] = rawData.charCodeAt(i);
-                }
-                return outputArray;
-            }
-        })
-    </script>
+    <script src="client.js"></script>
 </body>
 
 </html>
